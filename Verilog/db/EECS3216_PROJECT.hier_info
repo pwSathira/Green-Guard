@@ -1,0 +1,176 @@
+|pico_reader_display
+MAX10_CLK1_50 => pix_clk.CLK
+MAX10_CLK1_50 => sync2[0].CLK
+MAX10_CLK1_50 => sync2[2].CLK
+MAX10_CLK1_50 => sync2[4].CLK
+MAX10_CLK1_50 => sync2[6].CLK
+MAX10_CLK1_50 => sync2[8].CLK
+MAX10_CLK1_50 => sync2[10].CLK
+MAX10_CLK1_50 => sync2[12].CLK
+MAX10_CLK1_50 => sync2[13].CLK
+MAX10_CLK1_50 => sync2[14].CLK
+MAX10_CLK1_50 => sync1[0].CLK
+MAX10_CLK1_50 => sync1[2].CLK
+MAX10_CLK1_50 => sync1[4].CLK
+MAX10_CLK1_50 => sync1[6].CLK
+MAX10_CLK1_50 => sync1[8].CLK
+MAX10_CLK1_50 => sync1[10].CLK
+MAX10_CLK1_50 => sync1[12].CLK
+MAX10_CLK1_50 => sync1[13].CLK
+MAX10_CLK1_50 => sync1[14].CLK
+KEY[0] => reset_n.IN1
+ARDUINO_IO[0] => sync1[0].DATAIN
+ARDUINO_IO[1] => ~NO_FANOUT~
+ARDUINO_IO[2] => sync1[2].DATAIN
+ARDUINO_IO[3] => ~NO_FANOUT~
+ARDUINO_IO[4] => sync1[4].DATAIN
+ARDUINO_IO[5] => ~NO_FANOUT~
+ARDUINO_IO[6] => sync1[6].DATAIN
+ARDUINO_IO[7] => ~NO_FANOUT~
+ARDUINO_IO[8] => sync1[8].DATAIN
+ARDUINO_IO[9] => ~NO_FANOUT~
+ARDUINO_IO[10] => sync1[10].DATAIN
+ARDUINO_IO[11] => ~NO_FANOUT~
+ARDUINO_IO[12] => sync1[12].DATAIN
+ARDUINO_IO[13] => sync1[13].DATAIN
+ARDUINO_IO[14] => sync1[14].DATAIN
+ARDUINO_IO[15] => ~NO_FANOUT~
+ARDUINO_IO[16] => ~NO_FANOUT~
+VGA_HS <= vga_640x480:vga_inst.hs
+VGA_VS <= vga_640x480:vga_inst.vs
+VGA_R[0] <= pix_on.DB_MAX_OUTPUT_PORT_TYPE
+VGA_R[1] <= pix_on.DB_MAX_OUTPUT_PORT_TYPE
+VGA_R[2] <= pix_on.DB_MAX_OUTPUT_PORT_TYPE
+VGA_R[3] <= pix_on.DB_MAX_OUTPUT_PORT_TYPE
+VGA_G[0] <= pix_on.DB_MAX_OUTPUT_PORT_TYPE
+VGA_G[1] <= pix_on.DB_MAX_OUTPUT_PORT_TYPE
+VGA_G[2] <= pix_on.DB_MAX_OUTPUT_PORT_TYPE
+VGA_G[3] <= pix_on.DB_MAX_OUTPUT_PORT_TYPE
+VGA_B[0] <= pix_on.DB_MAX_OUTPUT_PORT_TYPE
+VGA_B[1] <= pix_on.DB_MAX_OUTPUT_PORT_TYPE
+VGA_B[2] <= pix_on.DB_MAX_OUTPUT_PORT_TYPE
+VGA_B[3] <= pix_on.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|pico_reader_display|vga_640x480:vga_inst
+clk25 => vcnt[0].CLK
+clk25 => vcnt[1].CLK
+clk25 => vcnt[2].CLK
+clk25 => vcnt[3].CLK
+clk25 => vcnt[4].CLK
+clk25 => vcnt[5].CLK
+clk25 => vcnt[6].CLK
+clk25 => vcnt[7].CLK
+clk25 => vcnt[8].CLK
+clk25 => vcnt[9].CLK
+clk25 => hcnt[0].CLK
+clk25 => hcnt[1].CLK
+clk25 => hcnt[2].CLK
+clk25 => hcnt[3].CLK
+clk25 => hcnt[4].CLK
+clk25 => hcnt[5].CLK
+clk25 => hcnt[6].CLK
+clk25 => hcnt[7].CLK
+clk25 => hcnt[8].CLK
+clk25 => hcnt[9].CLK
+reset_n => vcnt[0].ACLR
+reset_n => vcnt[1].ACLR
+reset_n => vcnt[2].ACLR
+reset_n => vcnt[3].ACLR
+reset_n => vcnt[4].ACLR
+reset_n => vcnt[5].ACLR
+reset_n => vcnt[6].ACLR
+reset_n => vcnt[7].ACLR
+reset_n => vcnt[8].ACLR
+reset_n => vcnt[9].ACLR
+reset_n => hcnt[0].ACLR
+reset_n => hcnt[1].ACLR
+reset_n => hcnt[2].ACLR
+reset_n => hcnt[3].ACLR
+reset_n => hcnt[4].ACLR
+reset_n => hcnt[5].ACLR
+reset_n => hcnt[6].ACLR
+reset_n => hcnt[7].ACLR
+reset_n => hcnt[8].ACLR
+reset_n => hcnt[9].ACLR
+hs <= hs.DB_MAX_OUTPUT_PORT_TYPE
+vs <= vs.DB_MAX_OUTPUT_PORT_TYPE
+x[0] <= x.DB_MAX_OUTPUT_PORT_TYPE
+x[1] <= x.DB_MAX_OUTPUT_PORT_TYPE
+x[2] <= x.DB_MAX_OUTPUT_PORT_TYPE
+x[3] <= x.DB_MAX_OUTPUT_PORT_TYPE
+x[4] <= x.DB_MAX_OUTPUT_PORT_TYPE
+x[5] <= x.DB_MAX_OUTPUT_PORT_TYPE
+x[6] <= x.DB_MAX_OUTPUT_PORT_TYPE
+x[7] <= x.DB_MAX_OUTPUT_PORT_TYPE
+x[8] <= x.DB_MAX_OUTPUT_PORT_TYPE
+x[9] <= x.DB_MAX_OUTPUT_PORT_TYPE
+y[0] <= y.DB_MAX_OUTPUT_PORT_TYPE
+y[1] <= y.DB_MAX_OUTPUT_PORT_TYPE
+y[2] <= y.DB_MAX_OUTPUT_PORT_TYPE
+y[3] <= y.DB_MAX_OUTPUT_PORT_TYPE
+y[4] <= y.DB_MAX_OUTPUT_PORT_TYPE
+y[5] <= y.DB_MAX_OUTPUT_PORT_TYPE
+y[6] <= y.DB_MAX_OUTPUT_PORT_TYPE
+y[7] <= y.DB_MAX_OUTPUT_PORT_TYPE
+y[8] <= y.DB_MAX_OUTPUT_PORT_TYPE
+y[9] <= y.DB_MAX_OUTPUT_PORT_TYPE
+active <= active.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|pico_reader_display|seven_seg_decoder:decT
+digit[0] => Decoder0.IN3
+digit[1] => Decoder0.IN2
+digit[2] => Decoder0.IN1
+digit[3] => Decoder0.IN0
+segments[0] <= WideOr6.DB_MAX_OUTPUT_PORT_TYPE
+segments[1] <= WideOr5.DB_MAX_OUTPUT_PORT_TYPE
+segments[2] <= WideOr4.DB_MAX_OUTPUT_PORT_TYPE
+segments[3] <= WideOr3.DB_MAX_OUTPUT_PORT_TYPE
+segments[4] <= WideOr2.DB_MAX_OUTPUT_PORT_TYPE
+segments[5] <= WideOr1.DB_MAX_OUTPUT_PORT_TYPE
+segments[6] <= WideOr0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|pico_reader_display|seven_seg_decoder:decO
+digit[0] => Decoder0.IN3
+digit[1] => Decoder0.IN2
+digit[2] => Decoder0.IN1
+digit[3] => Decoder0.IN0
+segments[0] <= WideOr6.DB_MAX_OUTPUT_PORT_TYPE
+segments[1] <= WideOr5.DB_MAX_OUTPUT_PORT_TYPE
+segments[2] <= WideOr4.DB_MAX_OUTPUT_PORT_TYPE
+segments[3] <= WideOr3.DB_MAX_OUTPUT_PORT_TYPE
+segments[4] <= WideOr2.DB_MAX_OUTPUT_PORT_TYPE
+segments[5] <= WideOr1.DB_MAX_OUTPUT_PORT_TYPE
+segments[6] <= WideOr0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|pico_reader_display|seven_seg_decoder:decM
+digit[0] => Decoder0.IN3
+digit[1] => Decoder0.IN2
+digit[2] => Decoder0.IN1
+digit[3] => Decoder0.IN0
+segments[0] <= WideOr6.DB_MAX_OUTPUT_PORT_TYPE
+segments[1] <= WideOr5.DB_MAX_OUTPUT_PORT_TYPE
+segments[2] <= WideOr4.DB_MAX_OUTPUT_PORT_TYPE
+segments[3] <= WideOr3.DB_MAX_OUTPUT_PORT_TYPE
+segments[4] <= WideOr2.DB_MAX_OUTPUT_PORT_TYPE
+segments[5] <= WideOr1.DB_MAX_OUTPUT_PORT_TYPE
+segments[6] <= WideOr0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|pico_reader_display|seven_seg_decoder:decP
+digit[0] => Decoder0.IN3
+digit[1] => Decoder0.IN2
+digit[2] => Decoder0.IN1
+digit[3] => Decoder0.IN0
+segments[0] <= WideOr6.DB_MAX_OUTPUT_PORT_TYPE
+segments[1] <= WideOr5.DB_MAX_OUTPUT_PORT_TYPE
+segments[2] <= WideOr4.DB_MAX_OUTPUT_PORT_TYPE
+segments[3] <= WideOr3.DB_MAX_OUTPUT_PORT_TYPE
+segments[4] <= WideOr2.DB_MAX_OUTPUT_PORT_TYPE
+segments[5] <= WideOr1.DB_MAX_OUTPUT_PORT_TYPE
+segments[6] <= WideOr0.DB_MAX_OUTPUT_PORT_TYPE
+
+

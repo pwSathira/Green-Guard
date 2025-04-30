@@ -1,0 +1,220 @@
+//-----------------------------------------------------------------------------
+// Module: pico_reader_display
+//
+// Description: Reads 6-bit humidity and 3-bit moisture data from Pico via
+//              ARDUINO_IO pins on DE10-Lite. Displays the values cyclically
+//              on the seven-segment displays.
+//
+// Inputs:
+//   CLOCK_50      : 50 MHz system clock
+//   KEY[0]        : Active-low reset
+//   ARDUINO_IO[8:0]: Input data pins from Pico
+//                     [5:0] = Humidity (LSB on [0])
+//                     [8:6] = Moisture (LSB on [6])
+//
+// Outputs:
+//   HEX0 - HEX5   : Seven-segment display outputs (active low)
+//
+//-----------------------------------------------------------------------------
+module pico_reader_display (
+    input wire CLOCK_50,
+    input wire [0:0] KEY, // Use KEY[0] for reset
+    input wire [8:0] ARDUINO_IO,
+
+    output wire [6:0] HEX0,
+    output wire [6:0] HEX1,
+    output wire [6:0] HEX2,
+    output wire [6:0] HEX3,
+    output wire [6:0] HEX4,
+    output wire [6:0] HEX5
+);
+
+    // --- Parameters ---
+    parameter CYCLE_CLOCKS = 50_000_000; // Approx 1 second cycle @ 50MHz
+    parameter STATE_HUMIDITY = 1'b0;
+    parameter STATE_MOISTURE = 1'b1;
+
+    // --- Internal Signals ---
+    wire reset_n = KEY[0]; // Active low reset
+
+    // Input Synchronization Registers (2-stage synchronizer)
+    reg [8:0] data_sync1;
+    reg [8:0] data_sync2;
+    wire [5:0] humidity_in = data_sync2[5:0];
+    wire [2:0] moisture_in = data_sync2[8:6];
+
+    // Data Storage Registers
+    reg [5:0] humidity_reg;
+    reg [2:0] moisture_reg;
+
+    // Display Cycling Logic
+    reg [25:0] cycle_counter; // Counter for ~1 second delay
+    reg display_state; // 0 = Humidity, 1 = Moisture
+
+    // BCD Conversion for Humidity
+    reg [3:0] humid_bcd_tens;
+    reg [3:0] humid_bcd_ones;
+
+    // Moisture BCD (simple conversion as value is 0-7)
+    wire [3:0] moist_bcd = {1'b0, moisture_reg}; // Pad with 0 for 4-bit BCD
+
+    // Seven Segment Decoder Outputs
+    wire [6:0] seg_humid_tens;
+    wire [6:0] seg_humid_ones;
+    wire [6:0] seg_moist_ones;
+    wire [6:0] seg_label_H;
+    wire [6:0] seg_label_M;
+    wire [6:0] seg_blank;
+
+    // --- Input Synchronization ---
+    always @(posedge CLOCK_50 or negedge reset_n) begin
+        if (!reset_n) begin
+            data_sync1 <= 9'b0;
+            data_sync2 <= 9'b0;
+        end else begin
+            data_sync1 <= ARDUINO_IO;
+            data_sync2 <= data_sync1;
+        end
+    end
+
+    // --- Data Capture and Storage ---
+    // Capture the synchronized data on every clock edge
+    always @(posedge CLOCK_50 or negedge reset_n) begin
+        if (!reset_n) begin
+            humidity_reg <= 6'b0;
+            moisture_reg <= 3'b0;
+        end else begin
+            humidity_reg <= humidity_in;
+            moisture_reg <= moisture_in;
+        end
+    end
+
+    // --- Display Cycling Logic ---
+    always @(posedge CLOCK_50 or negedge reset_n) begin
+        if (!reset_n) begin
+            cycle_counter <= 26'b0;
+            display_state <= STATE_HUMIDITY; // Start with humidity
+        end else begin
+            if (cycle_counter == CYCLE_CLOCKS - 1) begin
+                cycle_counter <= 26'b0;
+                display_state <= ~display_state; // Toggle state
+            end else begin
+                cycle_counter <= cycle_counter + 1;
+            end
+        end
+    end
+
+    // --- Binary to BCD Conversion for Humidity (Combinational) ---
+    // Simple conversion for 0-63 range
+    always @(*) begin
+        // Integer division and modulo are synthesized efficiently for constants
+        humid_bcd_tens = humidity_reg / 10;
+        humid_bcd_ones = humidity_reg % 10;
+        // Ensure results are within 4 bits (should be for 0-63)
+        if (humid_bcd_tens > 9) humid_bcd_tens = 9; // Max possible is 6
+        if (humid_bcd_ones > 9) humid_bcd_ones = 9;
+    end
+
+    // --- Instantiate Seven Segment Decoders ---
+    seven_seg_decoder dec_humid_tens (
+        .digit(humid_bcd_tens),
+        .segments(seg_humid_tens)
+    );
+
+    seven_seg_decoder dec_humid_ones (
+        .digit(humid_bcd_ones),
+        .segments(seg_humid_ones)
+    );
+
+    seven_seg_decoder dec_moist_ones (
+        .digit(moist_bcd), // Use directly converted moisture BCD
+        .segments(seg_moist_ones)
+    );
+
+    // Decoders for Labels and Blank
+    seven_seg_decoder dec_label_H (
+        .digit(4'd10), // Use 10 for 'H'
+        .segments(seg_label_H)
+    );
+
+    seven_seg_decoder dec_label_M (
+        .digit(4'd11), // Use 11 for 'M'
+        .segments(seg_label_M)
+    );
+
+    seven_seg_decoder dec_blank (
+        .digit(4'd15), // Use 15 for blank
+        .segments(seg_blank)
+    );
+
+
+    // --- Assign Outputs based on Display State ---
+    assign HEX5 = (display_state == STATE_HUMIDITY) ? seg_label_H : seg_label_M;
+    assign HEX4 = seg_blank; // Always blank
+    assign HEX3 = seg_blank; // Always blank
+    assign HEX2 = seg_blank; // Always blank
+    assign HEX1 = (display_state == STATE_HUMIDITY) ? seg_humid_tens : seg_blank;
+    assign HEX0 = (display_state == STATE_HUMIDITY) ? seg_humid_ones : seg_moist_ones;
+
+
+endmodule
+
+//-----------------------------------------------------------------------------
+// Module: seven_seg_decoder
+//
+// Description: Converts a 4-bit BCD digit (or special code) to active-low
+//              7-segment display signals.
+//              0-9: Standard digits
+//              10:  'H'
+//              11:  'M'
+//              12:  'E' (Error) - Not used here
+//              13:  '-' (Dash) - Not used here
+//              14:  '.' (Decimal) - Not used here
+//              15:  Blank
+//-----------------------------------------------------------------------------
+module seven_seg_decoder (
+    input wire [3:0] digit,
+    output reg [6:0] segments // Active low: seg_a=segments[0], ..., seg_g=segments[6]
+);
+
+    // Segment mapping: gfedcba (bit 6 -> bit 0)
+    parameter BLANK = 7'b1111111;
+    parameter ZERO  = 7'b1000000;
+    parameter ONE   = 7'b1111001;
+    parameter TWO   = 7'b0100100;
+    parameter THREE = 7'b0110000;
+    parameter FOUR  = 7'b0011001;
+    parameter FIVE  = 7'b0010010;
+    parameter SIX   = 7'b0000010;
+    parameter SEVEN = 7'b1111000;
+    parameter EIGHT = 7'b0000000;
+    parameter NINE  = 7'b0010000;
+    parameter H_    = 7'b0001001; // Letter H
+    parameter M_    = 7'b1010101; // Letter M (custom, looks like n n) or use 7'b1001000 for uppercase M
+    parameter E_    = 7'b0000110; // Letter E
+    parameter DASH  = 7'b0111111;
+    parameter DOT   = 7'b0111111; // Same as dash for simplicity here
+
+    always @(*) begin
+        case (digit)
+            4'd0:  segments = ZERO;
+            4'd1:  segments = ONE;
+            4'd2:  segments = TWO;
+            4'd3:  segments = THREE;
+            4'd4:  segments = FOUR;
+            4'd5:  segments = FIVE;
+            4'd6:  segments = SIX;
+            4'd7:  segments = SEVEN;
+            4'd8:  segments = EIGHT;
+            4'd9:  segments = NINE;
+            4'd10: segments = H_;    // H
+            4'd11: segments = M_;    // M
+            4'd12: segments = E_;    // E
+            4'd13: segments = DASH;  // -
+            4'd14: segments = DOT;   // . (using dash pattern)
+            4'd15: segments = BLANK; // Blank
+            default: segments = BLANK;
+        endcase
+    end
+
+endmodule

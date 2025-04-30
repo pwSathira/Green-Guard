@@ -1,0 +1,22 @@
+-- Memory Initialization File for 7-segment display patterns
+-- Width: 7 bits per entry (for 7 segments)
+-- Depth: 10 entries (digits 0-9)
+-- Active LOW (0 turns segment ON, 1 turns it OFF)
+
+WIDTH=7;
+DEPTH=10;
+ADDRESS_RADIX=UNS;
+DATA_RADIX=BIN;
+
+CONTENT BEGIN
+    0 : 0000001;  -- Display digit 0 (segments a,b,c,d,e,f ON)
+    1 : 1001111;  -- Display digit 1 (segments b,c ON)
+    2 : 0010010;  -- Display digit 2 (segments a,b,d,e,g ON)
+    3 : 0000110;  -- Display digit 3 (segments a,b,c,d,g ON)
+    4 : 1001100;  -- Display digit 4 (segments b,c,f,g ON)
+    5 : 0100100;  -- Display digit 5 (segments a,c,d,f,g ON)
+    6 : 0100000;  -- Display digit 6 (segments a,c,d,e,f,g ON)
+    7 : 0001111;  -- Display digit 7 (segments a,b,c ON)
+    8 : 0000000;  -- Display digit 8 (all segments ON)
+    9 : 0000100;  -- Display digit 9 (segments a,b,c,d,f,g ON)
+END;

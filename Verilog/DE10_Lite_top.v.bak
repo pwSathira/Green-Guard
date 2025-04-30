@@ -1,0 +1,123 @@
+module seven_segment_display (
+    input wire clk,           // Clock input (50 MHz on DE10-Lite)
+    input wire reset_n,       // Reset button (active low)
+    output reg [6:0] HEX0,    // 7-segment display 0
+    output reg [6:0] HEX1,    // 7-segment display 1
+    output reg [6:0] HEX2,    // 7-segment display 2
+    output reg [6:0] HEX3,    // 7-segment display 3
+    output reg [6:0] HEX4,    // 7-segment display 4
+    output reg [6:0] HEX5     // 7-segment display 5
+);
+
+    // Parameters for the counter
+    parameter COUNTER_MAX = 25000000; // For a 0.5 second delay with 50MHz clock
+
+    // Memory to store the 7-segment patterns from MIF file
+    reg [6:0] seg7_mem [0:9];
+    
+    // Counter for cycling through the digits
+    reg [3:0] display_digit [0:5]; // 6 digits to display
+    reg [24:0] counter;
+    reg [2:0] digit_index;
+    
+    // Initial block to load the MIF file
+    initial begin
+        $readmemb("numbers.mif", seg7_mem);
+        
+        // Initialize the digits to display (can be changed)
+        display_digit[0] = 0; // rightmost digit
+        display_digit[1] = 1;
+        display_digit[2] = 2;
+        display_digit[3] = 3;
+        display_digit[4] = 4;
+        display_digit[5] = 5; // leftmost digit
+        
+        // Initialize outputs
+        HEX0 = 7'b1111111; // All segments off
+        HEX1 = 7'b1111111;
+        HEX2 = 7'b1111111;
+        HEX3 = 7'b1111111;
+        HEX4 = 7'b1111111;
+        HEX5 = 7'b1111111;
+    end
+    
+    // Clock process to update the display
+    always @(posedge clk or negedge reset_n) begin
+        if (!reset_n) begin
+            counter <= 0;
+            digit_index <= 0;
+            
+            // Reset all displays
+            HEX0 <= 7'b1111111;
+            HEX1 <= 7'b1111111;
+            HEX2 <= 7'b1111111;
+            HEX3 <= 7'b1111111;
+            HEX4 <= 7'b1111111;
+            HEX5 <= 7'b1111111;
+        end
+        else begin
+            // Display each digit using the patterns from memory
+            HEX0 <= seg7_mem[display_digit[0]];
+            HEX1 <= seg7_mem[display_digit[1]];
+            HEX2 <= seg7_mem[display_digit[2]];
+            HEX3 <= seg7_mem[display_digit[3]];
+            HEX4 <= seg7_mem[display_digit[4]];
+            HEX5 <= seg7_mem[display_digit[5]];
+            
+            // Optional: Count and change digits at regular intervals
+            counter <= counter + 1;
+            if (counter >= COUNTER_MAX) begin
+                counter <= 0;
+                
+                // Update digits - this creates a simple counting sequence
+                display_digit[0] <= (display_digit[0] + 1) % 10;
+                
+                if (display_digit[0] == 9) begin
+                    display_digit[1] <= (display_digit[1] + 1) % 10;
+                    
+                    if (display_digit[1] == 9) begin
+                        display_digit[2] <= (display_digit[2] + 1) % 10;
+                        
+                        if (display_digit[2] == 9) begin
+                            display_digit[3] <= (display_digit[3] + 1) % 10;
+                            
+                            if (display_digit[3] == 9) begin
+                                display_digit[4] <= (display_digit[4] + 1) % 10;
+                                
+                                if (display_digit[4] == 9) begin
+                                    display_digit[5] <= (display_digit[5] + 1) % 10;
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+endmodule
+
+module DE10_Lite_top (
+    input MAX10_CLK1_50,      // 50MHz clock
+    input [1:0] KEY,          // Push buttons (KEY[0] is reset)
+    output [6:0] HEX0,        // 7-segment display 0
+    output [6:0] HEX1,        // 7-segment display 1
+    output [6:0] HEX2,        // 7-segment display 2
+    output [6:0] HEX3,        // 7-segment display 3
+    output [6:0] HEX4,        // 7-segment display 4
+    output [6:0] HEX5         // 7-segment display 5
+);
+
+    // Instantiate the seven-segment display module
+    seven_segment_display display_inst (
+        .clk(MAX10_CLK1_50),  // Connect to 50MHz clock
+        .reset_n(KEY[0]),     // Connect to reset button (active low)
+        .HEX0(HEX0),
+        .HEX1(HEX1),
+        .HEX2(HEX2),
+        .HEX3(HEX3),
+        .HEX4(HEX4),
+        .HEX5(HEX5)
+    );
+
+endmodule

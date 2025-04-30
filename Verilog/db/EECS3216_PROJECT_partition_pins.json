@@ -1,0 +1,109 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "VGA_HS",
+					"strict" : false
+				},
+				{
+					"name" : "VGA_VS",
+					"strict" : false
+				},
+				{
+					"name" : "VGA_R[0]",
+					"strict" : false
+				},
+				{
+					"name" : "VGA_R[1]",
+					"strict" : false
+				},
+				{
+					"name" : "VGA_R[2]",
+					"strict" : false
+				},
+				{
+					"name" : "VGA_R[3]",
+					"strict" : false
+				},
+				{
+					"name" : "VGA_G[0]",
+					"strict" : false
+				},
+				{
+					"name" : "VGA_G[1]",
+					"strict" : false
+				},
+				{
+					"name" : "VGA_G[2]",
+					"strict" : false
+				},
+				{
+					"name" : "VGA_G[3]",
+					"strict" : false
+				},
+				{
+					"name" : "VGA_B[0]",
+					"strict" : false
+				},
+				{
+					"name" : "VGA_B[1]",
+					"strict" : false
+				},
+				{
+					"name" : "VGA_B[2]",
+					"strict" : false
+				},
+				{
+					"name" : "VGA_B[3]",
+					"strict" : false
+				},
+				{
+					"name" : "KEY[0]",
+					"strict" : false
+				},
+				{
+					"name" : "MAX10_CLK1_50",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[14]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[13]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[12]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[10]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[8]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[6]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[4]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[2]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[0]",
+					"strict" : false
+				}
+			]
+		}
+	]
+}
