@@ -1,4 +1,5 @@
-# AI Plant Watering System
+# Green-Guard
+## FPGA & LSTM-Driven Smart Irrigation System
 
 **EECS 3216 Digital Systems Engineering - Final Project**
 
@@ -20,7 +21,7 @@ This project implements an intelligent home automation system for plant care, in
 
 ## Project Overview
 
-The **AI Plant Watering System** is a real-time embedded system designed to automate plant care by monitoring environmental conditions (soil moisture, humidity), controlling actuators (water pump, fan), and providing visual feedback. A key innovation is the integration of a machine learning model to analyze historical data and recommend optimal environmental conditions to improve plant health. The system leverages a hybrid architecture combining a Raspberry Pi Pico microcontroller for sensing and control with a DE10-Lite FPGA for real-time VGA display of sensor data.
+**Green-Guard** is a real-time embedded system designed to automate plant care by monitoring environmental conditions (soil moisture, humidity), controlling actuators (water pump, fan), and providing visual feedback. A key innovation is the integration of a machine learning model to analyze historical data and recommend optimal environmental conditions to improve plant health. The system leverages a hybrid architecture combining a Raspberry Pi Pico microcontroller for sensing and control with a DE10-Lite FPGA for real-time VGA display of sensor data.
 
 ## Demo
 
