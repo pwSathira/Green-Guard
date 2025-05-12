@@ -104,7 +104,7 @@ To replicate this project, you will need the hardware listed above and the corre
 *   Intel Quartus Prime (for DE10-Lite Verilog code)
 *   Python with necessary libraries (TensorFlow, Keras, scikit-learn, pandas, numpy, matplotlib) for the AI model.
 
-The final code for the Pico (Arduino C++), DE10-Lite (Verilog), and the AI Model (Python) are available in this repository, in dedicated folders (e.g., `Verilog`, `Arduino`). Refer to the code comments and the project documentation for detailed setup and usage instructions.
+The final code for the Pico (Arduino C++), DE10-Lite (Verilog), and the AI Model (Python) are available in this repository, in dedicated folders (e.g., `Verilog`, `Arduino`, `ML`). Refer to the code comments and the project documentation for detailed setup and usage instructions.
 
 ## Group Members
 
