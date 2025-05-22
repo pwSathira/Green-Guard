@@ -26,7 +26,7 @@ This project implements an intelligent home automation system for plant care, in
 ## Demo
 
 Check out a demonstration of the system in action:
-[https://youtu.be/Yn1OIFF0FPE?si=2QMAj6_p2w1azBqL](https://youtu.be/Yn1OIFF0FPE?si=2QMAj6_p2w1azBqL)
+https://www.youtube.com/watch?v=Yn1OlFF0FPE
 
 ## Goals and Rationale
 
