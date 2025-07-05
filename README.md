@@ -48,8 +48,6 @@ The system employs a **dual-controller architecture** for modularity and leverag
 
 Communication between the Pico and DE10-Lite is achieved using **parallel binary GPIO**, providing a fast and lightweight data path.
 
-*(A system diagram illustrating the connections can be added here if available in the repository)*
-
 ## Hardware Components
 
 *   **Raspberry Pi Pico:** Microcontroller for sensor reading and actuator control.
